@@ -15,6 +15,8 @@ public class Duke {
         System.out.println(greetings);
         System.out.println(horizontal_line);
         Scanner scanner = new Scanner(System.in);
+
+        List<String> taskList = new ArrayList<String>();
         while(true) {
             String prompt = scanner.nextLine();  // Read user input
             if(prompt.equals("bye")) {
@@ -22,10 +24,20 @@ public class Duke {
                 System.out.println("Bye. Hope to see you again soon");
                 System.out.println(horizontal_line);
                 return;
+            } else if (prompt.equals("list")) {
+                System.out.println(horizontal_line);
+                int counter = 1;
+                for(String task : taskList) {
+                    System.out.printf("%d. %s\n", counter, task);
+                    counter++;
+                }
+                System.out.println(horizontal_line);
             } else {
+                taskList.add(prompt);
                 System.out.println(horizontal_line);
-                System.out.println(prompt);
+                System.out.printf("added: %s\n", prompt);
                 System.out.println(horizontal_line);
+
 
             }
 
