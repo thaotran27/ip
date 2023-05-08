@@ -128,29 +128,51 @@ public class Duke {
             } else if (arr[0].equals("done")) {
                 int taskNumber = Integer.parseInt(arr[1]);
                 taskList.get(taskNumber-1).setIsDone(true);
-                String reply = "Nice! I've marked this task as done:"
+                String reply = "Nice! I've marked this task as done:\n"
                         + taskList.get(taskNumber-1).toString();
                 printReply(reply);
             } else if (arr[0].equals("todo")) {
-                Task newTask = new ToDo(prompt.substring(5));
-                taskList.add(newTask);
-                String reply = String.format("Got it. I've added this task: \n%s\nNow you have %d tasks in the list.",
-                        newTask.toString(), taskList.size());
-                printReply(reply);
+                try {
+                    Task newTask = new ToDo(prompt.substring(5));
+                    taskList.add(newTask);
+                    String reply = String.format("Got it. I've added this task: \n%s\nNow you have %d tasks in the list.",
+                            newTask.toString(), taskList.size());
+                    printReply(reply);
+                } catch (Exception e) {
+                    printReply("OOPS!!! The description of a todo cannot be empty.");
+                }
             } else if (arr[0].equals("deadline")) {
                 String[] partition = prompt.split("/");
-                Task newTask = new Deadline(partition[0].substring(9), partition[1].substring(3));
-                taskList.add(newTask);
-                String reply = String.format("Got it. I've added this task: \n%s\nNow you have %d tasks in the list.",
-                        newTask.toString(), taskList.size());
-                printReply(reply);
+                try {
+                    Task newTask = new Deadline(partition[0].substring(9,partition[0].length()-1), partition[1].substring(3));
+                    taskList.add(newTask);
+                    String reply = String.format("Got it. I've added this task: \n%s\nNow you have %d tasks in the list.",
+                            newTask.toString(), taskList.size());
+                    printReply(reply);
+                } catch (Exception e) {
+                    printReply("OOPS!!! The description of a deadline cannot be empty.");
+                }
+
             } else if (arr[0].equals("event")) {
                 String[] partition = prompt.split("/");
-                Task newTask = new Event(partition[0].substring(6), partition[1].substring(3));
-                taskList.add(newTask);
-                String reply = String.format("Got it. I've added this task: \n%s\nNow you have %d tasks in the list.",
-                        newTask.toString(), taskList.size());
+                try {
+                    Task newTask = new Event(partition[0].substring(6, partition[0].length() - 1), partition[1].substring(3));
+                    taskList.add(newTask);
+                    String reply = String.format("Got it. I've added this task: \n%s\nNow you have %d tasks in the list.",
+                            newTask.toString(), taskList.size());
+                    printReply(reply);
+                } catch (Exception e) {
+                    printReply("OOPS!!! The description of an event cannot be empty.");
+                }
+            } else if (arr[0].equals("delete")){
+                int taskNumber = Integer.parseInt(arr[1]);
+                Task taskToRemove = taskList.get(taskNumber-1);
+                taskList.remove(taskNumber-1);
+                String reply = String.format("Noted. I've removed this task: \n%s\nNow you have %d tasks in the list.",
+                        taskToRemove.toString(), taskList.size());
                 printReply(reply);
+            } else {
+                printReply("OOPS!!! I'm sorry, but I don't know what that means :-(");
             }
 
         }
